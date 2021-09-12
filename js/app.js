@@ -12,18 +12,24 @@ loadProducts();
 const showProducts = (products) => {
   const allProducts = products.map((pd) => pd);
   for (const product of allProducts) {
+    const totalRating = product.rating.count;
+    const avarageRating = product.rating.rate;
     const image = product.image;
+
     const div = document.createElement("div");
     div.classList.add("product");
     div.innerHTML = `<div class="single-product">
       <div>
     <img class="product-image" src='${image}'></img>
       </div>
-      <h3>${product.title}</h3>
+      <h3 >${product.title}</h3>
+
       <p>Category: ${product.category}</p>
+      <p>${avarageRating} rating of ${totalRating}</p>
       <h2>Price: $ ${product.price}</h2>
       <button onclick="addToCart(${product.id},${product.price})" id="addToCart-btn" class="buy-now btn btn-success">add to cart</button>
-      <button id="details-btn" class="btn btn-danger">Details</button></div>
+      <button  onclick="showDetails('${product.title}','${product.description}')" data-toggle="modal" data-target="#exampleModal" id="details-btn" class="btn btn-danger">Details</button>
+      </div>
       `;
     document.getElementById("all-products").appendChild(div);
   }
@@ -84,4 +90,21 @@ const updateTotal = () => {
     getInputValue("delivery-charge") +
     getInputValue("total-tax");
   document.getElementById("total").innerText = grandTotal.toFixed(2);
+};
+
+// show modal
+
+const showDetails = (title, description) => {
+  const detailsArea = document.getElementById("details");
+
+  detailsArea.textContent = "";
+  const details = document.createElement("div");
+  details.classList.add("jumbotron");
+  details.innerHTML = `
+  <h1 class="display-4">${title}</h1>
+  <p class="lead">${description}</p>
+  
+  
+  `;
+  detailsArea.appendChild(details);
 };
